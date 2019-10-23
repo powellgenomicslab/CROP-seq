@@ -6,10 +6,11 @@ R1_FASTQ=$1
 R2_FASTQ=$2
 OUTPUT_DIR=$3
 
+
 # Define outputs
 mkdir -p $OUTPUT_DIR
-R1_TRIMMED=${OUTPUT_DIR}/${R1_FASTQ}
-R2_TRIMMED=${OUTPUT_DIR}/${R2_FASTQ}
+R1_TRIMMED=${OUTPUT_DIR}/$( basename ${R1_FASTQ} )
+R2_TRIMMED=${OUTPUT_DIR}/$( basename {R2_FASTQ} )
 
 # Activate conda environment
 # Conda environment has umi_tools and cutadapt from bioconda
