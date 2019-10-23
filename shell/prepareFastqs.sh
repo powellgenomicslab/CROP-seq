@@ -9,8 +9,11 @@ OUTPUT_DIR=$3
 
 # Define outputs
 mkdir -p $OUTPUT_DIR
-R1_TRIMMED=${OUTPUT_DIR}/$( basename ${R1_FASTQ} )
-R2_TRIMMED=${OUTPUT_DIR}/$( basename {R2_FASTQ} )
+R1_FILENAME=$( basename "$R1_FASTQ" )
+R2_FILENAME=$( basename "$R2_FASTQ" )
+
+R1_TRIMMED=${OUTPUT_DIR}/${R1_FILENAME}
+R2_TRIMMED=${OUTPUT_DIR}/${R2_FILENAME}
 
 # Activate conda environment
 # Conda environment has umi_tools and cutadapt from bioconda
@@ -20,7 +23,7 @@ conda activate umi_tools
 # Get cell number from QC/Cell Ranger
 umi_tools whitelist --stdin $R1_FASTQ \
 --bc-pattern=CCCCCCCCCCCCCCCCNNNNNNNNNNNN \
---set-cell-number=9900 \
+--set-cell-number=10000 \
 --log2stderr > whitelist.txt || exit 1;
 
 # Extract barcodes and UMIs and add to read names
