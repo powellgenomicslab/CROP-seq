@@ -1,0 +1,25 @@
+#!/bin/bash
+#$ -S /bin/bash
+#$ -q short.q
+#$ -N mkref
+#$ -V
+#$ -cwd
+#$ -b n
+#$ -pe smp 16
+#$ -l mem_requested=8G,tmp_requested=150G,tmpfree=150G
+
+## CORE DIRECTORIES ON DELTA
+CELLRANGER_PATH=/share/ClusterShare/software/contrib/sccg/cellranger/prebuilt/3.0.2
+export PATH=${CELLRANGER_PATH}:$PATH
+source ${CELLRANGER_PATH}/sourceme.bash
+
+REF_DIR=/share/ScratchGeneral/annsen/data/reference_data/Homo_sapiens.CROPseq.2019
+INPUT_REF_FILES=${REF_DIR}/base_files
+OUTPUT_REF_FILES=${REF_DIR}/star
+
+cd $OUTPUT_REF_FILES
+
+INPUT_FASTA=${INPUT_REF_FILES}/Homo_sapiens.CROPseq.2019.fa
+INPUT_FILTERED_GTF=${INPUT_REF_FILES}/Homo_sapiens.CROPseq.2019.filtered.gtf
+
+cellranger mkref --genome=Homo_sapiens.CROPseq.2019 --fasta=${INPUT_FASTA} --genes=${INPUT_FILTERED_GTF} || exit 1
