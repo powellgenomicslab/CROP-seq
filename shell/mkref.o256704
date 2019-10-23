@@ -1,0 +1,50 @@
+/share/ScratchGeneral/annsen/pipelines/cellranger-3.1.0/cellranger-cs/3.1.0/bin
+cellranger mkref (3.1.0)
+Copyright (c) 2019 10x Genomics, Inc.  All rights reserved.
+-------------------------------------------------------------------------------
+
+Oct 23 17:47:12 ..... Started STAR run
+Oct 23 17:47:12 ... Starting to generate Genome files
+Oct 23 17:48:23 ... starting to sort  Suffix Array. This may take a long time...
+Oct 23 17:48:29 ... sorting Suffix Array chunks and saving them to disk...
+Oct 23 18:37:21 ... loading chunks from disk, packing SA...
+Oct 23 18:37:48 ... Finished generating suffix array
+Oct 23 18:37:48 ... Generating Suffix Array index
+Oct 23 18:39:38 ... Completed Suffix Array index
+Oct 23 18:39:38 ..... Processing annotations GTF
+Oct 23 18:40:00 ..... Inserting junctions into the genome indices
+Oct 23 18:45:08 ... writing Genome to disk ...
+Oct 23 18:45:16 ... writing Suffix Array to disk ...
+Oct 23 18:45:40 ... writing SAindex to disk
+Oct 23 18:45:44 ..... Finished successfully
+Creating new reference folder at /share/ScratchGeneral/annsen/data/reference_data/Homo_sapiens.CROPseq.2019/Homo_sapiens.CROPseq.2019
+...done
+
+Writing genome FASTA file into reference folder...
+...done
+
+Computing hash of genome FASTA file...
+...done
+
+Indexing genome FASTA file...
+...done
+
+Writing genes GTF file into reference folder...
+...done
+
+Computing hash of genes GTF file...
+...done
+
+Writing genes index file into reference folder (may take over 10 minutes for a 3Gb genome)...
+...done
+
+Writing genome metadata JSON file into reference folder...
+...done
+
+Generating STAR genome index (may take over 8 core hours for a 3Gb genome)...
+...done.
+
+>>> Reference successfully created! <<<
+
+You can now specify this reference on the command line:
+cellranger --transcriptome=/share/ScratchGeneral/annsen/data/reference_data/Homo_sapiens.CROPseq.2019/Homo_sapiens.CROPseq.2019 ...

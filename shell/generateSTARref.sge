@@ -9,13 +9,13 @@
 #$ -l mem_requested=8G,tmp_requested=150G,tmpfree=150G
 
 ## CORE DIRECTORIES ON DELTA
-CELLRANGER_PATH=/share/ClusterShare/software/contrib/sccg/cellranger/prebuilt/3.0.2
+CELLRANGER_PATH=/share/ScratchGeneral/annsen/pipelines/cellranger-3.1.0
 export PATH=${CELLRANGER_PATH}:$PATH
 source ${CELLRANGER_PATH}/sourceme.bash
 
 REF_DIR=/share/ScratchGeneral/annsen/data/reference_data/Homo_sapiens.CROPseq.2019
 INPUT_REF_FILES=${REF_DIR}/base_files
-OUTPUT_REF_FILES=${REF_DIR}/star
+OUTPUT_REF_FILES=${REF_DIR}
 
 cd $OUTPUT_REF_FILES
 
