@@ -1,0 +1,23 @@
+#!/bin/bash
+#$ -S /bin/bash
+#$ -q short.q
+#$ -N mkref
+#$ -V
+#$ -cwd
+#$ -b n
+#$ -pe smp 16
+#$ -l mem_requested=8G,tmp_requested=150G,tmpfree=150G
+
+conda activate star
+INPUT_DIR=/share/ScratchGeneral/annsen/data/experimental_data/RAW/CROP-seq/fastq
+FILE_1=${INPUT_DIR}/POOLED1_S7_L001_R1_Processed.fastq
+FILE_2=${INPUT_DIR}/POOLED1_S7_L001_R2_Processed.fastq
+
+REF_DIR=/share/ScratchGeneral/annsen/data/reference_data/Homo_sapiens.CROPseq.2019/star/Homo_sapiens.CROPseq.2019
+
+STAR --genomeDir $REF_DIR --readFilesCommand cat \
+--readFilesIn $FILE_1 $FILE_2 \
+--outSAMtype BAM Unsorted --outSAMunmapped Fastx \
+--quantMode GeneCounts \
+--runThreadN 16 \
+--outFileNamePrefix POOLED1
