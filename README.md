@@ -42,8 +42,14 @@ cellranger mkref --genome=${GENOME_NAME} --fasta=${INPUT_FASTA} --genes=${INPUT_
 ```
 
 ## FASTQ Preparation
-1. Trim and label reads with cell barcodes and UMI barcodes using umi_tools.
-2. Trim polyA from R2 sequence with cutadapt.
+1. If not done already, split FASTQ into paired-end reads using BBMAP suite.
+
+```bash
+reformat.sh in=$INPUT_FASTQ out1=$INPUT_FASTQ1 out2=$INPUT_FASTQ2
+```
+
+2. Trim and label reads with cell barcodes and UMI barcodes using umi_tools.
+3. Trim polyA from R2 sequence with cutadapt.
 
 Both steps can be done with [prepareFastqs.sh](shell/prepareFastqs.sh). Note that you may need to adjust the nucleotide sequences for different chemistries of the Chromium system.
 
