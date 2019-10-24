@@ -10,7 +10,7 @@
 
 # Cell Ranger directory
 CELLRANGER_PATH=/share/ScratchGeneral/annsen/pipelines/cellranger-3.1.0
-INPUT_DIR=/share/ScratchGeneral/annsen/data/experimental_data/RAW/CROP-seq/scRNA-seq/fastq_path
+INPUT_DIR=/directflow/GWCCGPipeline/projects/bioinformatics/R_190327_ALEHEW_EXT_10X/20190327_ALEHEW_EXT_10X/190702_A00152_0121_AHLK3WDSXX/analysis/demux/outs/fastq_path
 REF_DIR=/share/ScratchGeneral/annsen/data/reference_data/Homo_sapiens.CROPseq.2019/Homo_sapiens.CROPseq.2019
 OUTPUT_DIR=/share/ScratchGeneral/annsen/data/experimental_data/CLEAN/CROP-seq
 
@@ -22,10 +22,10 @@ source $CELLRANGER_PATH/sourceme.bash
 cd $OUTPUT_DIR
 
 # Run CELL RANGER 3.1
-cellranger count --id=AH_array-1 \
+cellranger count --id=AH_pool-1 \
                    --transcriptome=${REF_DIR} \
                    --fastqs=${INPUT_DIR} \
-                   --sample=AH_array-1 \
+                   --sample=AH_pool-1 \
                    --force-cells=20000 \
                    --nosecondary \
                    --localcores=16 \
