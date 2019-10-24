@@ -1,0 +1,55 @@
+/share/ScratchGeneral/annsen/pipelines/cellranger-3.1.0/cellranger-cs/3.1.0/bin
+cellranger count (3.1.0)
+Copyright (c) 2019 10x Genomics, Inc.  All rights reserved.
+-------------------------------------------------------------------------------
+
+Martian Runtime - '3.1.0-v3.2.3'
+2019-10-24 11:11:14 [jobmngr] WARNING: The current virtual address space size
+                              limit is too low.
+	Limiting virtual address space size interferes with the operation of many
+	common libraries and programs, and is not recommended.
+	Contact your system administrator to remove this limit.
+Serving UI at http://epsilon-6-8.local:42646?auth=OQ52VXfVIkCetBmOPIvd4OuN5rkVPZYNnw4QUblDgFI
+
+Running preflight checks (please wait)...
+2019-10-24 11:11:14 [runtime] (ready)           ID.AH_pool-1.SC_RNA_COUNTER_CS.EXPAND_SAMPLE_DEF
+2019-10-24 11:11:14 [runtime] (run:local)       ID.AH_pool-1.SC_RNA_COUNTER_CS.EXPAND_SAMPLE_DEF.fork0.chnk0.main
+2019-10-24 11:11:22 [runtime] (chunks_complete) ID.AH_pool-1.SC_RNA_COUNTER_CS.EXPAND_SAMPLE_DEF
+Checking sample info...
+Checking FASTQ folder...
+Checking libraries...
+Checking reference...
+Checking reference_path (/share/ScratchGeneral/annsen/data/reference_data/Homo_sapiens.CROPseq.2019/Homo_sapiens.CROPseq.2019) on epsilon-6-8.local...
+Checking chemistry...
+Checking optional arguments...
+mrc: '3.1.0-v3.2.3'
+
+mrp: '3.1.0-v3.2.3'
+
+Anaconda: Python 2.7.14 :: Anaconda, Inc.
+
+numpy: 1.14.2
+
+scipy: 1.0.1
+
+pysam: 0.14.1
+
+h5py: 2.8.0
+
+pandas: 0.22.0
+
+STAR: STAR_2.5.1b
+
+samtools: samtools 1.7
+Using htslib 1.7
+Copyright (C) 2018 Genome Research Ltd.
+
+2019-10-24 11:11:25 [runtime] (ready)           ID.AH_pool-1.SC_RNA_COUNTER_CS.SC_RNA_COUNTER.SC_RNA_ANALYZER.CHOOSE_DIMENSION_REDUCTION
+2019-10-24 11:11:25 [runtime] (run:local)       ID.AH_pool-1.SC_RNA_COUNTER_CS.SC_RNA_COUNTER.SC_RNA_ANALYZER.CHOOSE_DIMENSION_REDUCTION.fork0.chnk0.main
+2019-10-24 11:11:25 [runtime] (ready)           ID.AH_pool-1.SC_RNA_COUNTER_CS.SC_RNA_COUNTER.DISABLE_FEATURE_STAGES
+2019-10-24 11:11:25 [runtime] (run:local)       ID.AH_pool-1.SC_RNA_COUNTER_CS.SC_RNA_COUNTER.DISABLE_FEATURE_STAGES.fork0.chnk0.main
+2019-10-24 11:11:25 [runtime] (ready)           ID.AH_pool-1.SC_RNA_COUNTER_CS.SC_RNA_COUNTER.CHEMISTRY_DETECTOR.DETECT_CHEMISTRY
+2019-10-24 11:11:25 [runtime] (run:local)       ID.AH_pool-1.SC_RNA_COUNTER_CS.SC_RNA_COUNTER.CHEMISTRY_DETECTOR.DETECT_CHEMISTRY.fork0.chnk0.main
+2019-10-24 11:11:25 [runtime] (chunks_complete) ID.AH_pool-1.SC_RNA_COUNTER_CS.SC_RNA_COUNTER.SC_RNA_ANALYZER.CHOOSE_DIMENSION_REDUCTION
+2019-10-24 11:11:25 [runtime] (chunks_complete) ID.AH_pool-1.SC_RNA_COUNTER_CS.SC_RNA_COUNTER.DISABLE_FEATURE_STAGES
+2019-10-24 11:11:28 [runtime] (progress)        ID.AH_pool-1.SC_RNA_COUNTER_CS.SC_RNA_COUNTER.CHEMISTRY_DETECTOR.DETECT_CHEMISTRY.fork0.chnk0: Building transcriptome...
