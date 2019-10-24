@@ -41,7 +41,17 @@ cellranger mkgtf ${INPUT_GTF} ${INPUT_FILTERED_GTF}  --attribute=gene_biotype:pr
 cellranger mkref --genome=${GENOME_NAME} --fasta=${INPUT_FASTA} --genes=${INPUT_FILTERED_GTF} || exit 1
 ```
 
-## FASTQ Preparation
+## scRNA-seq Processing and Analysis
+###  Chromium Processing
+This step is usually done by the service provider. Samples need to be mapped to the reference prepared in the previous step.
+
+### Guide molecule identification
+If the reference has worked, you will receive a count table with the guide and control RNA as additional genes in the expression matrix. These can be retrieved using the following steps.
+
+1. Load the data located in the "filtered_
+
+## MiSeq Enrichment
+### FASTQ Preparation
 1. If not done already, split FASTQ into paired-end reads using BBMAP suite.
 
 ```bash
