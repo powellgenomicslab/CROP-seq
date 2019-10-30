@@ -22,10 +22,10 @@ source $CELLRANGER_PATH/sourceme.bash
 cd $OUTPUT_DIR
 
 # Run CELL RANGER 3.1
-cellranger count --id=AH_pool-2 \
+cellranger count --id=AH_pool-1 \
                    --transcriptome=${REF_DIR} \
                    --fastqs=${INPUT_DIR} \
-                   --sample=AH_pool-2 \
+                   --sample=AH_pool-1 \
                    --force-cells=20000 \
                    --nosecondary \
                    --localcores=16 \
