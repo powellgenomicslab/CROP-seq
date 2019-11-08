@@ -61,8 +61,10 @@ fastp -i Galaxy112-[ARRAY1_R1_R2_merge].fastqsanger  -o ARRAY1.fastq -U --umi_lo
 2. Strip polyT tail from the reads using [cutadapt](https://cutadapt.readthedocs.io/en/stable/index.html).
 
 ```bash
-cutadapt -g "^T{30}" -o ARRAY1.fastq -p ARRAY1_Processed.fastq
+cutadapt -j 4 -g "T{200}" -o ARRAY1_Processed.fastq ARRAY1.fastq 
 ```
+
+This can be run for all samples using the preprocessFastq.sh script.
 
 ## MiSeq Enrichment
 ### Mapping
@@ -74,7 +76,7 @@ STAR --genomeDir $REF_DIR --readFilesCommand cat \
 --outSAMtype BAM Unsorted \
 --quantMode GeneCounts \
 --runThreadN 16 \
---outFileNamePrefix POOLED1_ \
+--outFileNamePrefix $SAMPLE_NAME \
 --outReadsUnmapped Fastx \
 --outFilterScoreMinOverLread 0 \
 --outFilterMatchNminOverLread 0 \
