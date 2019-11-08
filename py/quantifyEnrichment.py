@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import argparse
 import pysam
 import pandas as pd
 
@@ -17,19 +18,29 @@ def quantifyGuides(x, bam_input = None):
 
     return(molecule_df)        
 
-# Read in guide RNA
-guide_filepath = "~/Repositories/CROP-seq/example_data/CropSeq_sgRNA_2019.csv"
-guide_df = pd.read_csv(guide_filepath)
+def parseArgs():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-i", "--input", type = str, help = "Enrichment alignment file.")
+    parser.add_argument("-o", "--output", type = str, help = "Name of the output.")
+    args = parser.parse_args()
+    return((args.input, args.output))
 
-# Read in BAM file
-bam_filepath = "/Volumes/LACIE/CROP-seq/MiSeq/PROCESSED/POOLED1_Aligned.sortedByCoord.out.bam"
+if __name__ == "__main__":
+    # Parse arguments
+    input_dir,output_dir = parseArgs()
 
-# Gather cell barcodes
-#molecule_df = molecule_df.set_index(["gRNA", "cell_barcode", "umi"])
+    # Read in guide RNA
+    guide_filepath = "../example_data/CropSeq_sgRNA_2019.csv"
+    guide_df = pd.read_csv(guide_filepath)
 
-bam_input = pysam.AlignmentFile(bam_filepath, "rb")
+    # Read in BAM file
+    bam_filepath = input_dir
 
-guide_df_list = [quantifyGuides(x, bam_input = bam_input) for x in guide_df["sgRNA"].tolist() ] 
-bam_input.close()
+    # Gather cell barcodes
+    bam_input = pysam.AlignmentFile(bam_filepath, "rb")
+    guide_df_list = [quantifyGuides(x, bam_input = bam_input) for x in guide_df["sgRNA"].tolist() ] 
+    bam_input.close()
 
-molecule_tally = (molecule_df.groupby(["gRNA", "cell_barcode", "umi"])["reads"].sum()).reset_index()
+    molecule_df = pd.concat(guide_df_list)
+    molecule_tally = (molecule_df.groupby(["gRNA", "cell_barcode", "umi"])["reads"].sum()).reset_index()
+    molecule_tally.to_csv(output_dir, index = False, sep = "\t")
