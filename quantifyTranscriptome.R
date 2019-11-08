@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript
+args = commandArgs(trailingOnly=TRUE)
 library(Matrix)
 library(dplyr)
 library(tidyr)
@@ -8,7 +10,7 @@ open_gzip <- function(x, type = c("r", "rb")){
   return(filestream)
 }
 
-input_dir <- "/Volumes/LACIE/CROP-seq/Transcriptome/AH_array-6/filtered_feature_bc_matrix/"
+input_dir <- args[1]
 matrix <- readMM(open_gzip(paste0(input_dir, "matrix.mtx.gz"), type = "rb"))
 barcodes <- read.csv(open_gzip(paste0(input_dir, "barcodes.tsv.gz"), type = "r"), header = FALSE, stringsAsFactors = FALSE, sep = "\t")
 genes <- read.csv(open_gzip(paste0(input_dir, "features.tsv.gz"), type = "r"), header = FALSE, stringsAsFactors = FALSE, sep = "\t")
@@ -25,5 +27,13 @@ grna_list <- grep("_gene", genes$gene_name, value = TRUE)
 grna_matrix <- matrix[grna_list, ]
 
 # Identify cells with at least one guide
-postives <- as.data.frame(table(apply(grna_matrix, 2, function(x) any(x > 0))))
-colnames(postives) <- c("gRNA", "nCells")
+positives <- as.data.frame(table(apply(grna_matrix, 2, function(x) any(x > 0))))
+colnames(positives) <- c("gRNA", "nCells")
+
+# Identify number of cells per guide
+cells_per_guide <- as.data.frame(apply(grna_matrix, 1, function(x) length(which(x != 0))))
+cells_per_guide$gRNA <- rownames(cells_per_guide)
+rownames(cells_per_guide) <- NULL
+cells_per_guide <- cells_per_guide[, 2:1]
+colnames(cells_per_guide) <- c("gRNA", "Number of Cells")
+write.csv(cells_per_guide, "Array2-CellsPerGuide.csv", row.names = FALSE)
