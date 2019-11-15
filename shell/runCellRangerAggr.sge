@@ -5,12 +5,12 @@
 #$ -V
 #$ -cwd
 #$ -b n
-#$ -pe smp 16
+#$ -pe smp 8
 #$ -l mem_requested=8G,tmp_requested=150G,tmpfree=150G
 
 # Cell Ranger directory
 CELLRANGER_PATH=/share/ScratchGeneral/annsen/pipelines/cellranger-3.1.0
-INPUT_CSV=${SGE_O_WORKDIR}/aggr.csv
+INPUT_CSV=${SGE_O_WORKDIR}/arrayed_aggr.csv
 OUTPUT_DIR=/share/ScratchGeneral/annsen/data/experimental_data/CLEAN/CROP-seq
 
 # LOAD CELL RANGER INTO BACKGROUND
@@ -21,12 +21,5 @@ source $CELLRANGER_PATH/sourceme.bash
 cd $OUTPUT_DIR
 
 # Run CELL RANGER 3.1
-cellranger count --id=AH_pool-1 \
-                   --transcriptome=${REF_DIR} \
-                   --fastqs=${INPUT_DIR} \
-                   --sample=AH_pool-1 \
-                   --force-cells=20000 \
-                   --nosecondary \
-                   --localcores=16 \
-                   --localmem=128
+cellranger aggr --id=ARRAYED_AGGR --csv=$INPUT_CSV --normalize=mapped
 

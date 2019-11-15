@@ -1,7 +1,7 @@
 library_id,molecule_h5
-ARRAY1,
-ARRAY2,
-ARRAY3,
-ARRAY4,
-ARRAY5,
-ARRAY6,
+ARRAY1,/share/ScratchGeneral/annsen/data/experimental_data/CLEAN/CROP-seq/AH_array-1/outs/molecule_info.h5
+ARRAY2,/share/ScratchGeneral/annsen/data/experimental_data/CLEAN/CROP-seq/AH_array-2/outs/molecule_info.h5
+ARRAY3,/share/ScratchGeneral/annsen/data/experimental_data/CLEAN/CROP-seq/AH_array-3/outs/molecule_info.h5
+ARRAY4,/share/ScratchGeneral/annsen/data/experimental_data/CLEAN/CROP-seq/AH_array-4/outs/molecule_info.h5
+ARRAY5,/share/ScratchGeneral/annsen/data/experimental_data/CLEAN/CROP-seq/AH_array-5/outs/molecule_info.h5
+ARRAY6,/share/ScratchGeneral/annsen/data/experimental_data/CLEAN/CROP-seq/AH_array-6/outs/molecule_info.h5
