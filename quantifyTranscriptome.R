@@ -34,4 +34,4 @@ transcriptome_df$cell_barcode <- rownames(transcriptome_df)
 rownames(transcriptome_df) <- NULL
 colnames(transcriptome_df) <- c("gRNA", "cell_barcode")
 transcriptome_df <- transcriptome_df[, c("cell_barcode", "gRNA")]
-write_tsv(transcriptome_df, sprintf("/Users/anne/Dropbox (Garvan)/Anne/CROP-seq/TranscriptAssignments/%s_TranscriptAssignments.tsv", sample_name))
+write_tsv(transcriptome_df, sprintf("%s_TranscriptAssignments.tsv", sample_name))

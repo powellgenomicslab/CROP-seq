@@ -46,8 +46,6 @@ dev.off()
 # Filter data
 seurat_obj <- subset(seurat_obj, nCount_RNA > 9000 & nCount_RNA < 60000 & nFeature_RNA > 3000 & 
                        percent.mt < 20 & percent.rb < 40)
-seurat_obj <- SCTransform(seurat_obj, vars.to.regress = c("percent.mt", "percent.rb"),
-                          conserve.memory = TRUE, seed.use = 1337)
 saveRDS(seurat_obj, sprintf("/Volumes/LACIE/CROP-seq/%s_SeuratObject.rds", sample_name))
 
 

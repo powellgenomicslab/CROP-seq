@@ -1,0 +1,32 @@
+#!/bin/bash
+#$ -S /bin/bash
+#$ -q short.q
+#$ -N quantify
+#$ -V
+#$ -cwd
+#$ -b n
+#$ -pe smp 16
+#$ -l mem_requested=8G,tmp_requested=150G,tmpfree=150G
+
+# Cell Ranger directory
+CELLRANGER_PATH=/share/ScratchGeneral/annsen/pipelines/cellranger-3.1.0
+INPUT_CSV=${SGE_O_WORKDIR}/aggr.csv
+OUTPUT_DIR=/share/ScratchGeneral/annsen/data/experimental_data/CLEAN/CROP-seq
+
+# LOAD CELL RANGER INTO BACKGROUND
+export PATH=$CELLRANGER_PATH:$PATH
+source $CELLRANGER_PATH/sourceme.bash
+
+# GO TO OUTPUT DIRECTORY
+cd $OUTPUT_DIR
+
+# Run CELL RANGER 3.1
+cellranger count --id=AH_pool-1 \
+                   --transcriptome=${REF_DIR} \
+                   --fastqs=${INPUT_DIR} \
+                   --sample=AH_pool-1 \
+                   --force-cells=20000 \
+                   --nosecondary \
+                   --localcores=16 \
+                   --localmem=128
+
