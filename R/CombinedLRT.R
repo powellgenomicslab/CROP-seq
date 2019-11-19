@@ -1,5 +1,11 @@
 #!/usr/bin/env Rscript
 # Scripts for calculating combined likelihood ratio
+library(Seurat)
+library(dplyr)
+library(tidyr)
+library(readr)
+library(ggplot2)
+library(BiocParallel)
 
 # Load environment
 MinMax <- function(data, min, max) {
@@ -22,8 +28,7 @@ bimodLikData_FixNoVar <- function(x, xmin = 0) {
   likA <- length(x = x1) * log(x = 1 - xal)
   
   #likelihood of positivec cells 
-  likB <- length(x = x2) *
-    log(x = xal)
+  likB <- length(x = x2) * log(x = xal)
   
   return(likA + likB)
 }
@@ -93,3 +98,61 @@ runCombinedLRT <- function(gene, test_matrix = NULL, control_matrix = NULL){
   de.result <- DifferentialLRT(test_counts, control_counts)    
   return(de.result)
 }
+
+worker <- function(gene_list, test_matrix = NULL, control_matrix = NULL){
+  # Calculate p-values
+  p_vals <- lapply(gene_list, runCombinedLRT, test_matrix = test_matrix, control_matrix)
+  names(p_vals) <- gene_list
+  p_vals <- unlist(p_vals)
+  padj_vals <- stats::p.adjust(p_vals, method = "BH")
+  
+  # Calculate mean expression
+  test_means <- Matrix::rowMeans(test_matrix[gene_list, ])
+  control_means <- Matrix::rowMeans(control_matrix[gene_list, ])
+  
+  # FoldChange
+  foldChange <- test_means/control_means
+  log2FoldChange <- log2(foldChange)
+  
+  output_df <- data.frame(gene_id = gene_list,
+                          test_mean = test_means, 
+                          control_mean = control_means, 
+                          pval = p_vals, padj = padj_vals, 
+                          foldChange = foldChange, 
+                          log2FoldChange = log2FoldChange)
+  return(output_df)  
+}
+
+
+# MC DAVID TEST
+# Discrete/continuous model for single cell expression data based on a mixture 
+# a point mass at zero and log-normal distribution
+# Use log normal counts
+# LRT 
+
+target <- "TRIOBP"
+seurat_obj <- readRDS("/Volumes/LACIE/CROP-seq/ARRAY_AGGR_OBJ.rds")
+
+# Retrieve metadata from Seurat object
+metadata <- FetchData(seurat_obj, vars = c("ARRAY", "TYPE", "gRNA", "TARGET"))
+
+# Subset out groups that we are going to test
+test_info <- subset(metadata, metadata$TARGET == target)
+control_info <- subset(metadata, metadata$TARGET == "NonTargeting")
+
+# Use UMI-corrected count data and split into two matrices
+normcounts <- seurat_obj[["SCT"]]@counts
+test_counts <- normcounts[ , rownames(test_info)]
+control_counts <- normcounts[, rownames(control_info)]
+
+# Remove guide-associated genes from query list
+gene_names <- rownames(normcounts)[which(!(rownames(normcounts) %in% grep("-gene$", rownames(normcounts), value = TRUE)))]
+
+chunked_genes <- split(gene_names, seq(1,4))
+
+test_results <- lapply(chunked_genes, worker, test_matrix = test_counts, control_matrix = control_counts)
+de_results <- do.call("rbind", test_results)
+de_results <- de_results[order(abs(de_results$log2FoldChange), decreasing = TRUE), ]
+de_results <- de_results %>% filter(!(is.infinite(log2FoldChange)))
+de_results <- de_results %>% dplyr::select(gene_id, target, everything())
+write_tsv(de_results, sprintf("%s_CROPseq_DE.tsv", target))
