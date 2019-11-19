@@ -45,6 +45,8 @@ cellranger mkref --genome=${GENOME_NAME} --fasta=${INPUT_FASTA} --genes=${INPUT_
 ###  Chromium Processing
 This step is usually done by the service provider. Samples need to be mapped to the reference prepared in the previous step.
 
+Data for all arrays need to be combined via the *cellranger aggr* function, which not only concatenates the count matrices, but also performs a read depth equalization between all samples.
+
 ### Guide molecule identification
 If the reference has worked, you will receive a count table with the guide and control RNA as additional genes in the expression matrix. These can be retrieved using the following steps.
 
@@ -64,9 +66,8 @@ fastp -i Galaxy112-[ARRAY1_R1_R2_merge].fastqsanger  -o ARRAY1.fastq -U --umi_lo
 cutadapt -j 4 -g "T{200}" -o ARRAY1_Processed.fastq ARRAY1.fastq 
 ```
 
-This can be run for all samples using the preprocessFastq.sh script.
+This can be run for all samples using the [preprocessFastq.sh](shell/preprocessFastq.sh) script.
 
-## MiSeq Enrichment
 ### Mapping
 Map guides to the reference generated in the first section using STAR aligner.
 
@@ -134,7 +135,7 @@ Guides are assigned to a cell if:
 | AAAAAGTGAAAGAGAA | sg112 | GUIDES | TEX41  |
 
 ### Quantification via UMIs
-Run [quantifyTranscriptome.R](quantifyTranscriptome.R) to retrieve gRNA-mapped UMI counts from the Chromium data. Input should be the `filtered_feature_bc_matrix` found in the Cell Ranger output folder.
+Run [quantifyTranscriptome.R](R/quantifyTranscriptome.R) to retrieve gRNA-mapped UMI counts from the Chromium data. Input should be the `filtered_feature_bc_matrix` found in the Cell Ranger output folder.
 
 You will need to invoke the script as follows:
 
@@ -159,11 +160,22 @@ This will generate a file with the following information:
 | AAACCCATCACTGTTT | GUIDES-sg097-TIMP3-gene |
 
 ### Final guide assignments
-The [processTranscriptome.R](processTranscriptome.R) script performs two functions:
+The [processTranscriptome.R](R/processTranscriptome.R) script performs two functions:
 
 1. Integration of assignments from read and transcriptome information
 2. Filter cells based on QC quality and adds gRNA assignments to gene-count information
 
 It is recommended you run this script manually as you will need to review the QC reports to make decisions on which cells to retain.
+
+## Analysis
+### Incorporation of scRNA-seq data and assignments
+The aggregated scRNA-seq data was loaded into R via Seurat, and final guide assignments were added to the object metadata with the  [Prepare_SingleCellData.R](R/Prepare_SingleCellData.R) script. This step also normalises the dataset using SCTransform.
+
+### Differential expression analysis
+The script [CombinedLRT.R](R/CombinedLRT.R) loads the Seurat object generated in the previous step and runs differential expression analysis on it. User will need to run analysis on each gRNA target to review transcriptome-wide effects on test group vs controls.
+
+
+
+
 
 
