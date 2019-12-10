@@ -127,23 +127,26 @@ worker <- function(gene_list, test_matrix = NULL, control_matrix = NULL){
 # Use log normal counts
 # LRT 
 
-target <- "NonTargeting-Human-0004-gene"
+# Load prepared Seurat object
 seurat_obj <- readRDS("/Volumes/LACIE/CROP-seq/ARRAY_AGGR_OBJ.rds")
 
 # Retrieve metadata from Seurat object
 metadata <- FetchData(seurat_obj, vars = c("ARRAY", "TYPE", "gRNA", "TARGET"))
 
+# Add your targets here
+target <- c("NonTargeting-Human-0003-gene", "NonTargeting-Human-0004-gene")
+
 # Check if we are testing a target - if so, exclude it from the control pool
-if (startsWith(target, "NonTargeting")){
+if (all(startsWith(target, "NonTargeting"))){
   control_guides <- grep("^NonTargeting", metadata$TARGET, value = TRUE)
-  control_guides <- unique(control_guides[which(control_guides != target)])
+  control_guides <- unique(control_guides[which(!(control_guides%in% target))])
   control_info <- subset(metadata, metadata$TARGET %in% control_guides)
 } else{
   control_info <- subset(metadata, metadata$TARGET == "NonTargeting")
 }
 
 # Subset out groups that we are going to test
-test_info <- subset(metadata, metadata$TARGET == target)
+test_info <- subset(metadata, metadata$TARGET %in% target)
 
 
 # Use UMI-corrected count data and split into two matrices
@@ -160,6 +163,6 @@ test_results <- lapply(chunked_genes, worker, test_matrix = test_counts, control
 de_results <- do.call("rbind", test_results)
 de_results <- de_results[order(abs(de_results$log2FoldChange), decreasing = TRUE), ]
 de_results <- de_results %>% filter(!(is.infinite(log2FoldChange)))
-de_results <- de_results %>% mutate(target = target)
+de_results <- de_results %>% mutate(target = paste(target, collapse = "_"))
 de_results <- de_results %>% dplyr::select(gene_id, target, everything())
-write_tsv(de_results, sprintf("%s_CROPseq_DE.tsv", target))
+write_tsv(de_results, sprintf("%s_CROPseq_DE.tsv", paste(target, collapse = "_")))
