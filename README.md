@@ -3,7 +3,7 @@ Repository for the processing and analysis of CROP-seq data. This repository con
 
 1. Reference preparation
 2. Guide quantification from scRNA-seq data
-3. Guide quantificationf from enriched RNAseq data
+3. Guide quantification from enriched RNAseq data
 
 ## Reference preparation
 The reference requires the following information:
